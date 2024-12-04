@@ -23,7 +23,7 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null
-        console.log('authorize', credentials)
+
         try {
           const userCredential = await signInWithEmailAndPassword(
             auth,
@@ -31,7 +31,6 @@ const handler = NextAuth({
             credentials.password,
           )
           const user = userCredential.user
-          console.log(user)
 
           return {
             id: user.uid,

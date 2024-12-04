@@ -45,10 +45,7 @@ export default function HomeForm() {
     <>
       {!isSignUp ? (
         <>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="grid text-main-brown"
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="grid">
             <Input
               {...register('email')}
               type="email"

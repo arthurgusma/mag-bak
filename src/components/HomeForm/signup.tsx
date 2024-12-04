@@ -61,10 +61,9 @@ export default function SignUp({ setisSignUp, isSignUp }: SignInProps) {
       }
     })
   }
-  console.log(errors.password?.message)
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid text-main-brown">
+    <form onSubmit={handleSubmit(onSubmit)} className="grid">
       <Input
         {...register('name')}
         type="text"

@@ -16,7 +16,7 @@ export default function SwitchForm({
   description,
 }: SwitchFormProps) {
   return (
-    <div className="flex justify-center text-main-light-green">
+    <div className="flex justify-center">
       <p className="mr-1 p-0">{description}</p>
       <ButtonText type="button" onClick={() => setisSignUp(!isSignUp)}>
         {buttonLabel}

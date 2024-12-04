@@ -13,25 +13,23 @@ export async function POST(req: Request) {
         { status: 400 },
       )
 
-    const userCredential = await createUserWithEmailAndPassword(
+    const { user } = await createUserWithEmailAndPassword(
       auth,
       body.email,
       body.password,
     )
 
-    const createdUser = userCredential.user
-
-    const userRef = doc(db, 'users', createdUser.uid)
+    const userRef = doc(db, 'users', user.uid)
     await setDoc(userRef, {
       name: `${body.name} ${body.lastName}`,
-      email: createdUser.email,
+      email: user.email,
       balance: 10000,
       createdAt: new Date().toISOString(),
-      uid: createdUser.uid,
+      uid: user.uid,
     })
 
     return NextResponse.json(
-      { message: 'User created successfully', uid: createdUser.uid },
+      { message: 'User created successfully', uid: user.uid },
       { status: 201 },
     )
   } catch (error: unknown) {

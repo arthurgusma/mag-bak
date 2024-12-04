@@ -36,7 +36,6 @@ const handler = NextAuth({
             id: user.uid,
             email: user.email,
             name: user.displayName,
-            image: user.photoURL,
           }
         } catch (error) {
           console.error('Error signing in:', error)
@@ -45,6 +44,16 @@ const handler = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id
+        token.name = user.name
+        token.email = user.email
+      }
+      return token
+    },
+  },
 })
 
 export { handler as GET, handler as POST }

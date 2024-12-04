@@ -23,9 +23,9 @@ export async function POST(req: Request) {
 
     const userRef = doc(db, 'users', createdUser.uid)
     await setDoc(userRef, {
-      displayName: `${body.name} ${body.lastName}`,
+      name: `${body.name} ${body.lastName}`,
       email: createdUser.email,
-      lastLogin: new Date().toISOString(),
+      balance: 10000,
       createdAt: new Date().toISOString(),
       uid: createdUser.uid,
     })

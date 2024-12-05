@@ -1,8 +1,15 @@
-export default function Home() {
+// import { TransactionSummary } from '@/components/Finance/TransactionSummary'
+import Welcome from '@/components/Welcome'
+import { UserProvider } from '@/context/UserContext'
+
+export default async function Home() {
   return (
-    <main className="w-1/4 min-h-svh place-content-center">
-      <h1 className="text-xl">Bem vindo ao Mag Bak</h1>
-      {/* <HomeForm /> */}
+    <main className="min-h-svh mx-20 my-10">
+      <UserProvider>
+        <Welcome />
+        {/* <TransactionSummary /> */}
+        {/* <TransactionForm /> */}
+      </UserProvider>
     </main>
   )
 }

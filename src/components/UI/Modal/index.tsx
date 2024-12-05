@@ -22,9 +22,14 @@ const style = {
 interface BasicModalProps {
   children: React.ReactNode
   title: string
+  buttonText: string
 }
 
-export default function BasicModal({ children, title }: BasicModalProps) {
+export default function BasicModal({
+  children,
+  title,
+  buttonText,
+}: BasicModalProps) {
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -42,7 +47,7 @@ export default function BasicModal({ children, title }: BasicModalProps) {
           },
         }}
       >
-        Novo pagamento
+        {buttonText}
       </Button>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>

@@ -9,7 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
     "@hookform/resolvers": "^3.9.1",
+    "@mui/material": "^6.1.10",
     "firebase": "^11.0.2",
     "next": "15.0.3",
     "next-auth": "^4.24.10",

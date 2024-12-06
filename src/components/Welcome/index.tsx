@@ -1,57 +1,50 @@
 'use client'
 
 import { UserContext } from '@/context/UserContext'
-import { useContext, useEffect } from 'react'
+import { formartCurrencyToReal } from '@/helpers'
+import { useContext } from 'react'
+import { ButtonText } from '../UI/Buttons'
+import { signOut } from 'next-auth/react'
+import BasicModal from '../UI/Modal'
+import { TransactionForm } from '../Finance/TransactionForm'
+import { TransactionSummary } from '../Finance/TransactionSummary'
+import LoadingSpinner from '../UI/LoadingSpinner'
 
 export default function Welcome() {
-  const { setUser, user } = useContext(UserContext)
-  const realCurrency = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  })
-  async function getUser() {
-    try {
-      const res = await fetch('/api/user', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      if (res.status === 200) {
-        const user = await res.json()
-        return user
-      } else {
-        throw new Error('Error getting user')
-      }
-    } catch (error: unknown) {
-      console.error('Error getting user:', error)
-    }
-  }
-
-  useEffect(() => {
-    if (user.displayName) return
-    getUser().then((user) => {
-      setUser(user)
-    })
-  }, [user])
+  const { user } = useContext(UserContext)
 
   return (
     <section>
-      {user && (
-        <div className="flex justify-between">
-          <div>
-            <h1 className="text-xl">
-              Bem vindo ao Mag Bak,{' '}
-              <span className="capitalize">{user.displayName}</span>
-            </h1>
+      {user.displayName ? (
+        <>
+          <div className="md:flex justify-between">
+            <div>
+              <h1 className="text-xl">
+                Bem-vindo ao Mag Bak,{' '}
+                <span className="capitalize">{user.displayName}</span>
+              </h1>
+              <ButtonText type="button" onClick={() => signOut()}>
+                Sair da conta
+              </ButtonText>
+            </div>
+            <div>
+              <h1 className="text-xl">
+                Saldo: {formartCurrencyToReal(user?.balance)}
+              </h1>
+              <div className="md:flex justify-end w-full">
+                <BasicModal
+                  title="Realizar pagamento"
+                  buttonText="Novo pagamento"
+                >
+                  <TransactionForm />
+                </BasicModal>
+              </div>
+            </div>
           </div>
-          <div>
-            <h1 className="text-xl">
-              Saldo: {realCurrency.format(user?.balance)}
-            </h1>
-          </div>
-        </div>
+          <TransactionSummary />
+        </>
+      ) : (
+        <LoadingSpinner />
       )}
     </section>
   )

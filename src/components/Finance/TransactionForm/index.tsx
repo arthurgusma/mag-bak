@@ -8,6 +8,7 @@ import Input from '@/components/UI/Input'
 import { ButtonSubmit } from '@/components/UI/Buttons'
 import { TransactionsContext } from '@/context/TraansactionsContext'
 import { UserContext } from '@/context/UserContext'
+import { formartCurrencyToReal } from '@/helpers'
 // import AuthorizeWithPassword from '../AuthorizeWithPassword'
 
 const tedSchema = z.object({
@@ -102,6 +103,14 @@ export function TransactionForm() {
             checked={transactionType === 'PIX'}
             onChange={() => setTransactionType('PIX')}
           />
+        </div>
+        <div className="flex justify-end w-full">
+          <h1 className="relative">
+            Saldo disponivel:
+            <span className="absolute bottom-0 right-0">
+              {formartCurrencyToReal(user.balance)}
+            </span>
+          </h1>
         </div>
       </div>
       <Input

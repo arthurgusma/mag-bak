@@ -14,8 +14,6 @@ export async function GET(req: NextRequest) {
     if (!id)
       return NextResponse.json({ error: 'User not allowd' }, { status: 401 })
 
-    console.log(id)
-
     const q = query(
       collection(db, 'transactions'),
       where('userUid', '==', id),

@@ -1,11 +1,13 @@
 import z from 'zod'
 
+const RegexCPFCNPJ =
+  /(^\d{3}\.\d{3}\.\d{3}\-\d{2}$)|(^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$)/
 export const tedSchema = z.object({
   type: z.literal('TED'),
   name: z
     .string()
     .min(3, 'Nome do favorecido deve ter pelo menos 3 caracteres'),
-  cpfCnpj: z.string().regex(/\d{11}|\d{14}/, 'CPF/CNPJ inválido'),
+  cpfCnpj: z.string().regex(RegexCPFCNPJ, 'CPF/CNPJ inválido'),
   bank: z.string().min(3, 'Nome do banco deve ter pelo menos 3 caracteres'),
   agency: z.number().min(4, 'Agência deve ter pelo menos 4 numeros'),
   account: z.number().min(4, 'Conta deve ter pelo menos 4 numeros'),
@@ -18,7 +20,7 @@ export const pixSchema = z.object({
   name: z
     .string()
     .min(3, 'Nome do favorecido deve ter pelo menos 3 caracteres'),
-  cpfCnpj: z.string().regex(/\d{11}|\d{14}/, 'CPF/CNPJ inválido'),
+  cpfCnpj: z.string().regex(RegexCPFCNPJ, 'CPF/CNPJ inválido'),
   bank: z.string().optional(),
   agency: z.string().optional(),
   account: z.string().optional(),

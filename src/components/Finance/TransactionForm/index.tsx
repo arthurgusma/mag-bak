@@ -108,6 +108,7 @@ export function TransactionForm() {
         label="CPF/CNPJ"
         {...register('cpfCnpj')}
         error={errors.cpfCnpj?.message}
+        placeholder="ex: 000.000.000-00"
       />
       {transactionType === 'TED' && (
         <>

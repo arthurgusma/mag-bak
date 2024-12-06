@@ -1,7 +1,9 @@
+/* eslint-disable no-useless-escape */
 import z from 'zod'
 
 const RegexCPFCNPJ =
   /(^\d{3}\.\d{3}\.\d{3}\-\d{2}$)|(^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$)/
+
 export const tedSchema = z.object({
   type: z.literal('TED'),
   name: z

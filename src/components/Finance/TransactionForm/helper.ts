@@ -10,7 +10,7 @@ export const tedSchema = z.object({
   agency: z.number().min(4, 'Agência deve ter pelo menos 4 numeros'),
   account: z.number().min(4, 'Conta deve ter pelo menos 4 numeros'),
   pixKey: z.string().optional(),
-  amount: z.number().min(0.01, 'Valor deve ser maior que zero'),
+  amount: z.string().min(0.01, 'Valor deve ser maior que zero'),
 })
 
 export const pixSchema = z.object({

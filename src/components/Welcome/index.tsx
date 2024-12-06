@@ -2,7 +2,7 @@
 
 import { UserContext } from '@/context/UserContext'
 import { formartCurrencyToReal } from '@/helpers'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { ButtonText } from '../UI/Buttons'
 import { signOut } from 'next-auth/react'
 import BasicModal from '../UI/Modal'
@@ -11,7 +11,11 @@ import { TransactionSummary } from '../Finance/TransactionSummary'
 import LoadingSpinner from '../UI/LoadingSpinner'
 
 export default function Welcome() {
+  const [modalOpen, setModalOpen] = useState(false)
   const { user } = useContext(UserContext)
+
+  const handleOpen = () => setModalOpen(true)
+  const handleClose = () => setModalOpen(false)
 
   return (
     <section>
@@ -33,10 +37,13 @@ export default function Welcome() {
               </h1>
               <div className="md:flex justify-end w-full">
                 <BasicModal
+                  open={modalOpen}
+                  handleOpen={handleOpen}
+                  handleClose={handleClose}
                   title="Realizar pagamento"
                   buttonText="Novo pagamento"
                 >
-                  <TransactionForm />
+                  <TransactionForm handleClose={handleClose} />
                 </BasicModal>
               </div>
             </div>

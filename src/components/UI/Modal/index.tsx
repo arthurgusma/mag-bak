@@ -23,17 +23,19 @@ interface BasicModalProps {
   children: React.ReactNode
   title: string
   buttonText: string
+  open: boolean
+  handleOpen: () => void
+  handleClose: () => void
 }
 
 export default function BasicModal({
   children,
   title,
   buttonText,
+  open,
+  handleOpen,
+  handleClose,
 }: BasicModalProps) {
-  const [open, setOpen] = React.useState(false)
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
-
   return (
     <div>
       <Button

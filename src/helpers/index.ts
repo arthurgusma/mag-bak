@@ -17,3 +17,15 @@ export function formatIsoDate(isoDate: string) {
 
   return `${day}/${month}/${year} às ${hours}:${minutes}`
 }
+
+export function convertCurrencyToNumber(formattedValue: string): number {
+  const cleanedValue = formattedValue
+    .replace('R$', '')
+    .replace(/\s/g, '')
+    .replace('.', '')
+    .replace(',', '.')
+
+  const numericValue = parseFloat(cleanedValue)
+
+  return isNaN(numericValue) ? 0 : Math.round(numericValue * 100)
+}

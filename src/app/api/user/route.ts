@@ -1,11 +1,11 @@
 import { NextResponse, NextRequest } from 'next/server'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '@/firebaseConfig'
-import jwt from 'next-auth/jwt'
+import { getToken } from 'next-auth/jwt'
 
 export async function GET(req: NextRequest) {
   try {
-    const token = await jwt.getToken({ req })
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
     if (!token || !token.id) {
       return NextResponse.json({ error: 'User not allowed' }, { status: 401 })
     }

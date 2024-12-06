@@ -8,16 +8,20 @@ import Input from '@/components/UI/Input'
 import { ButtonSubmit } from '@/components/UI/Buttons'
 import { TransactionsContext } from '@/context/TraansactionsContext'
 import { UserContext } from '@/context/UserContext'
-import { formartCurrencyToReal } from '@/helpers'
+import { convertCurrencyToNumber, formartCurrencyToReal } from '@/helpers'
 import { pixSchema, tedSchema } from './helper'
 // import AuthorizeWithPassword from '../AuthorizeWithPassword'
 
-export type TransactionSchema = z.infer<typeof tedSchema | typeof pixSchema>
+export type TransactionSchema = z.infer<typeof pixSchema | typeof tedSchema>
 
-export function TransactionForm() {
+interface TransactionFormProps {
+  handleClose: () => void
+}
+
+export function TransactionForm({ handleClose }: TransactionFormProps) {
   const [transactionType, setTransactionType] = useState<'TED' | 'PIX'>('TED')
   const { addTransaction } = useContext(TransactionsContext)
-  const { user } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
 
   const {
     register,
@@ -30,7 +34,7 @@ export function TransactionForm() {
   })
 
   async function onSubmit(data: TransactionSchema) {
-    if (user.balance < Number(data.amount)) {
+    if (user.balance < convertCurrencyToNumber(data.amount)) {
       alert('Saldo insuficiente')
       return
     }
@@ -40,11 +44,20 @@ export function TransactionForm() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        ...data,
+        amount: convertCurrencyToNumber(data.amount),
+        updatedAmount: user.balance - convertCurrencyToNumber(data.amount),
+      }),
     }).then(async (res) => {
       if (res.status === 201) {
         const data = await res.json()
         addTransaction(data.transaction)
+        setUser((prev) => ({
+          ...prev,
+          balance: data.transaction.updatedAmount,
+        }))
+        handleClose()
       } else {
         alert('Erro ao realizar transação')
       }
@@ -54,11 +67,11 @@ export function TransactionForm() {
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value.replace(/\D/g, '')
     let numericValue = parseFloat(rawValue) / 100
+
     if (isNaN(numericValue)) numericValue = 0
 
     const formattedValue = formartCurrencyToReal(numericValue)
-
-    setValue('amount', formattedValue, { shouldValidate: true })
+    setValue('amount', formattedValue)
   }
 
   return (
@@ -94,7 +107,7 @@ export function TransactionForm() {
           <h1 className="relative">
             Saldo disponivel:
             <span className="absolute bottom-0 right-0">
-              {formartCurrencyToReal(user.balance)}
+              {formartCurrencyToReal(user.balance / 100)}
             </span>
           </h1>
         </div>
@@ -119,14 +132,14 @@ export function TransactionForm() {
           />
           <Input
             label="Agência"
-            {...register('agency', { valueAsNumber: true })}
-            type="number"
+            {...register('agency')}
+            type="text"
             error={errors.agency?.message}
           />
           <Input
             label="Conta"
-            type="number"
-            {...register('account', { valueAsNumber: true })}
+            type="text"
+            {...register('account')}
             error={errors.account?.message}
           />
         </>
@@ -138,14 +151,18 @@ export function TransactionForm() {
           error={errors.pixKey?.message}
         />
       )}
-      <Input
-        label="Valor a Transferir"
-        type="string"
-        step="0.01"
-        {...register('amount', { valueAsNumber: true })}
-        error={errors.amount?.message}
-        onChange={handleAmountChange}
-      />
+      <div className="relative">
+        <Input
+          label="Valor a Transferir"
+          type="text"
+          {...register('amount')}
+          error={errors.amount?.message}
+          onChange={handleAmountChange}
+        />
+        {/* <div className="absolute top-6 bg-white left-2 flex items-center justify-end text-gray-500">
+          <span>{formattedAmount}</span>
+        </div> */}
+      </div>
       <ButtonSubmit>Realizar Transferência</ButtonSubmit>
       {/* <AuthorizeWithPassword /> */}
     </form>

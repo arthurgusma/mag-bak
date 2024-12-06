@@ -1,7 +1,7 @@
 'use client'
 
 import { ButtonSubmit } from '@/components/UI/Buttons'
-import BasicModal from '@/components/UI/Modal'
+// import BasicModal from '@/components/UI/Modal'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Input from '@/components/UI/Input'
 
@@ -25,7 +25,6 @@ export default function AuthorizeWithPassword() {
     reValidateMode: 'onChange',
   })
   async function onSubmit(data: Schema) {
-    console.log(data)
     await fetch('/api/auth/authorize', {
       method: 'POST',
       headers: {
@@ -44,16 +43,15 @@ export default function AuthorizeWithPassword() {
   console.log(auth.currentUser, 'auth')
 
   return (
-    <BasicModal title="Informe sua senha" buttonText="Realizar transação">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          label="Senha"
-          type="password"
-          {...register('password', { required: 'Senha é obrigatória' })}
-          error={errors.password?.message}
-        />
-        <ButtonSubmit>Confirmar</ButtonSubmit>
-      </form>
-    </BasicModal>
+    // <BasicModal title="Informe sua senha" buttonText="Realizar transação">
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Input
+        label="Senha"
+        type="password"
+        {...register('password', { required: 'Senha é obrigatória' })}
+        error={errors.password?.message}
+      />
+      <ButtonSubmit>Confirmar</ButtonSubmit>
+    </form>
   )
 }

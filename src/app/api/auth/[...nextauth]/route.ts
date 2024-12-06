@@ -4,7 +4,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '@/firebaseConfig'
 
 const handler = NextAuth({
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.SECRET,
   session: {
     strategy: 'jwt',
   },

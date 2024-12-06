@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
 
     const q = query(
       collection(db, 'transactions'),
-      where('userUid', '==', id),
+      where('userId', '==', id),
       orderBy('createdAt', 'desc'),
     )
 

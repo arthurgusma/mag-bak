@@ -13,7 +13,9 @@ export function TransactionSummary() {
 
       <div className="max-h-[70vh] my-10 overflow-auto w-96">
         {transactions.length < 1 ? (
-          <h1 className="text-xl mx-auto">Nenhuma transação realizada</h1>
+          <h1 className="text-xl flex justify-center">
+            Nenhuma transação realizada
+          </h1>
         ) : (
           transactions?.map((transaction) => {
             const { name, amount, type, createdAt } = transaction

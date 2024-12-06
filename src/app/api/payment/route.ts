@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'next-auth/jwt'
 import { collection, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '@/firebaseConfig'
-import { convertCurrencyToNumber } from '@/helpers'
 
 export async function POST(req: NextRequest) {
   try {

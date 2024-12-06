@@ -29,7 +29,7 @@ export default function Welcome() {
             </div>
             <div>
               <h1 className="text-xl">
-                Saldo: {formartCurrencyToReal(user?.balance)}
+                Saldo: {formartCurrencyToReal(user?.balance / 100)}
               </h1>
               <div className="md:flex justify-end w-full">
                 <BasicModal

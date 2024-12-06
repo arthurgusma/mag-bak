@@ -20,7 +20,7 @@ const TransactionCard: React.FC<TransactionCardProps> = ({
       <div className="space-y-2">
         <p className=" text-gray-700">
           <span className="font-medium">Valor:</span>{' '}
-          {formartCurrencyToReal(amount)}
+          {formartCurrencyToReal(amount / 100)}
         </p>
         <p className=" text-gray-700">
           <span className="font-medium">Dia:</span> {formatIsoDate(date)}

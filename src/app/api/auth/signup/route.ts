@@ -23,7 +23,7 @@ export async function POST(req: Request) {
     await setDoc(userRef, {
       name: `${body.name} ${body.lastName}`,
       email: user.email,
-      balance: 10000,
+      balance: 1000000,
       createdAt: new Date().toISOString(),
       uid: user.uid,
     })

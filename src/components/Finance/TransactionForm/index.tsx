@@ -9,35 +9,10 @@ import { ButtonSubmit } from '@/components/UI/Buttons'
 import { TransactionsContext } from '@/context/TraansactionsContext'
 import { UserContext } from '@/context/UserContext'
 import { formartCurrencyToReal } from '@/helpers'
+import { pixSchema, tedSchema } from './helper'
 // import AuthorizeWithPassword from '../AuthorizeWithPassword'
 
-const tedSchema = z.object({
-  type: z.literal('TED'),
-  name: z
-    .string()
-    .min(3, 'Nome do favorecido deve ter pelo menos 3 caracteres'),
-  cpfCnpj: z.string().regex(/\d{11}|\d{14}/, 'CPF/CNPJ inválido'),
-  bank: z.string().min(3, 'Nome do banco deve ter pelo menos 3 caracteres'),
-  agency: z.number().min(4, 'Agência deve ter pelo menos 4 numeros'),
-  account: z.number().min(4, 'Conta deve ter pelo menos 4 numeros'),
-  pixKey: z.string().optional(),
-  amount: z.number().min(0.01, 'Valor deve ser maior que zero'),
-})
-
-const pixSchema = z.object({
-  type: z.literal('PIX'),
-  name: z
-    .string()
-    .min(3, 'Nome do favorecido deve ter pelo menos 3 caracteres'),
-  cpfCnpj: z.string().regex(/\d{11}|\d{14}/, 'CPF/CNPJ inválido'),
-  bank: z.string().optional(),
-  agency: z.string().optional(),
-  account: z.string().optional(),
-  pixKey: z.string().min(6, 'Chave PIX deve ter pelo menos 6 caracteres'),
-  amount: z.number().min(0.01, 'Valor deve ser maior que zero'),
-})
-
-type TransactionSchema = z.infer<typeof tedSchema | typeof pixSchema>
+export type TransactionSchema = z.infer<typeof tedSchema | typeof pixSchema>
 
 export function TransactionForm() {
   const [transactionType, setTransactionType] = useState<'TED' | 'PIX'>('TED')
@@ -47,6 +22,7 @@ export function TransactionForm() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<TransactionSchema>({
     resolver: zodResolver(transactionType === 'TED' ? tedSchema : pixSchema),
@@ -54,7 +30,7 @@ export function TransactionForm() {
   })
 
   async function onSubmit(data: TransactionSchema) {
-    if (user.balance < data.amount) {
+    if (user.balance < Number(data.amount)) {
       alert('Saldo insuficiente')
       return
     }
@@ -73,6 +49,16 @@ export function TransactionForm() {
         alert('Erro ao realizar transação')
       }
     })
+  }
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/\D/g, '')
+    let numericValue = parseFloat(rawValue) / 100
+    if (isNaN(numericValue)) numericValue = 0
+
+    const formattedValue = formartCurrencyToReal(numericValue)
+
+    setValue('amount', formattedValue, { shouldValidate: true })
   }
 
   return (
@@ -153,10 +139,11 @@ export function TransactionForm() {
       )}
       <Input
         label="Valor a Transferir"
-        type="number"
+        type="string"
         step="0.01"
         {...register('amount', { valueAsNumber: true })}
         error={errors.amount?.message}
+        onChange={handleAmountChange}
       />
       <ButtonSubmit>Realizar Transferência</ButtonSubmit>
       {/* <AuthorizeWithPassword /> */}

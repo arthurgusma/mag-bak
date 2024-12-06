@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'next-auth/jwt'
-import { collection, doc, getDoc, setDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '@/firebaseConfig'
+import { convertCurrencyToNumber } from '@/helpers'
 
 export async function POST(req: NextRequest) {
   try {
@@ -33,6 +34,11 @@ export async function POST(req: NextRequest) {
     await setDoc(transactionRef, transaction)
 
     const createdTransaction = (await getDoc(transactionRef)).data()
+
+    const userRef = doc(db, `users/${id}`)
+    await updateDoc(userRef, {
+      balance: body.updatedAmount,
+    })
 
     return NextResponse.json(
       {

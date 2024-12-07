@@ -21,13 +21,8 @@ export async function POST(req: NextRequest) {
         { status: 400 },
       )
     }
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password,
-    )
+    await signInWithEmailAndPassword(auth, email, password)
 
-    console.log(userCredential)
     return NextResponse.json({ message: 'Reauthentication successful' })
   } catch (error) {
     console.error('Error reauthenticating user:', error)

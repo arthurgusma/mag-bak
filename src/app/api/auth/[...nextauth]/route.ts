@@ -7,6 +7,7 @@ const handler = NextAuth({
   secret: process.env.SECRET,
   session: {
     strategy: 'jwt',
+    maxAge: 30 * 60,
   },
   pages: {
     signIn: '/',

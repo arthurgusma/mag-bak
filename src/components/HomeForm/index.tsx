@@ -8,7 +8,7 @@ import SignUp from './signup'
 import Input from '@/components/UI/Input'
 import SwitchForm from '../SwitchForm'
 import { signIn } from 'next-auth/react'
-import { ButtonSubmit } from '../UI/Buttons'
+import { Button } from '../UI/Buttons'
 
 const schema = z.object({
   email: z.string().email({ message: 'informe um email valido' }),
@@ -31,7 +31,7 @@ export default function HomeForm() {
 
   async function onSubmit(data: LogInFormData) {
     try {
-      await signIn('credentials', {
+      signIn('credentials', {
         email: data.email,
         password: data.password,
         callbackUrl: '/home',
@@ -60,7 +60,7 @@ export default function HomeForm() {
             />
 
             <div className="flex justify-center py-4">
-              <ButtonSubmit>Entrar</ButtonSubmit>
+              <Button type="submit">Entrar</Button>
             </div>
           </form>
           <SwitchForm

@@ -9,6 +9,7 @@ import BasicModal from '../UI/Modal'
 import { TransactionForm } from '../Finance/TransactionForm'
 import { TransactionSummary } from '../Finance/TransactionSummary'
 import LoadingSpinner from '../UI/LoadingSpinner'
+import { Button } from '@mui/material'
 
 export default function Welcome() {
   const [modalOpen, setModalOpen] = useState(false)
@@ -27,7 +28,7 @@ export default function Welcome() {
                 Bem-vindo ao Mag Bak,{' '}
                 <span className="capitalize">{user.displayName}</span>
               </h1>
-              <ButtonText type="button" onClick={() => signOut()}>
+              <ButtonText type="button" handleClick={signOut}>
                 Sair da conta
               </ButtonText>
             </div>
@@ -36,12 +37,24 @@ export default function Welcome() {
                 Saldo: {formartCurrencyToReal(user?.balance / 100)}
               </h1>
               <div className="md:flex justify-end w-full">
+                <Button
+                  onClick={handleOpen}
+                  variant="outlined"
+                  sx={{
+                    color: '#A8CD89',
+                    borderColor: '#A8CD89',
+                    '&:hover': {
+                      opacity: 0.75,
+                    },
+                  }}
+                >
+                  Novo pagamento
+                </Button>
                 <BasicModal
                   open={modalOpen}
                   handleOpen={handleOpen}
                   handleClose={handleClose}
                   title="Realizar pagamento"
-                  buttonText="Novo pagamento"
                 >
                   <TransactionForm handleClose={handleClose} />
                 </BasicModal>

@@ -5,7 +5,7 @@ import Input from '../UI/Input'
 import z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ButtonSubmit } from '../UI/Buttons'
+import { Button } from '../UI/Buttons'
 import { signIn } from 'next-auth/react'
 
 const schema = z
@@ -96,7 +96,7 @@ export default function SignUp({ setisSignUp, isSignUp }: SignInProps) {
       />
 
       <div className="flex justify-center py-4">
-        <ButtonSubmit>Criar conta</ButtonSubmit>
+        <Button type="submit">Criar conta</Button>
       </div>
       <SwitchForm
         setisSignUp={setisSignUp}

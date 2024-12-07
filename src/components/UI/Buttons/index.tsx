@@ -2,15 +2,20 @@ interface ButtonProps {
   children: React.ReactNode
   width?: string
   type: 'button' | 'submit' | 'reset'
-  onClick?: () => void
+  handleClick?: () => void
 }
 
-export function ButtonText({ children, width, type, onClick }: ButtonProps) {
+export function ButtonText({
+  children,
+  width,
+  type,
+  handleClick,
+}: ButtonProps) {
   return (
     <button
       type={type}
       style={{ width: `${width}px` }}
-      onClick={onClick}
+      onClick={handleClick}
       className="underline hover:opacity-75"
     >
       {children}
@@ -18,12 +23,13 @@ export function ButtonText({ children, width, type, onClick }: ButtonProps) {
   )
 }
 
-export function ButtonSubmit({ children, width }: Omit<ButtonProps, 'type'>) {
+export function Button({ children, width, type, handleClick }: ButtonProps) {
   return (
     <button
-      type="submit"
+      type={type}
       style={{ width: `${width}px` }}
       className="text-black p-2 rounded-lg cursor-pointer bg-slate-200 hover:opacity-75"
+      onClick={handleClick}
     >
       {children}
     </button>

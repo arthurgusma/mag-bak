@@ -22,7 +22,6 @@ const style = {
 interface BasicModalProps {
   children: React.ReactNode
   title: string
-  buttonText: string
   open: boolean
   handleOpen: () => void
   handleClose: () => void
@@ -31,26 +30,11 @@ interface BasicModalProps {
 export default function BasicModal({
   children,
   title,
-  buttonText,
   open,
-  handleOpen,
   handleClose,
 }: BasicModalProps) {
   return (
     <div>
-      <Button
-        onClick={handleOpen}
-        variant="outlined"
-        sx={{
-          color: '#A8CD89',
-          borderColor: '#A8CD89',
-          '&:hover': {
-            opacity: 0.75,
-          },
-        }}
-      >
-        {buttonText}
-      </Button>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">

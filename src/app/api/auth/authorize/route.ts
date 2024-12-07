@@ -1,36 +1,36 @@
-// import { reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth'
-// import { getAuth } from 'firebase-admin/auth'
-import { NextRequest } from 'next/server'
-// import jwt from 'next-auth/jwt'
+import { auth } from '@/firebaseConfig'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { getToken } from 'next-auth/jwt'
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
-  console.log(req)
-  //   try {
-  //     const token = await jwt.getToken({ req })
-  //     if (token === null) {
-  //       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  //     }
-  //     const { id } = token
-  //     const user = await getAuth().getUser(id as string)
-  //     if (!user) {
-  //       return NextResponse.json({ error: 'User not found' }, { status: 404 })
-  //     }
-  //     const body = await req.json() // Parse the JSON body
-  //     const { email } = token
-  //     const { password } = body
-  //     if (!password || !email) {
-  //       return NextResponse.json(
-  //         {
-  //           error: 'Email and password are required',
-  //         },
-  //         { status: 400 },
-  //       )
-  //     }
-  //     const credential = EmailAuthProvider.credential(email, password)
-  //     await reauthenticateWithCredential(user, credential)
-  //     return NextResponse.json({ message: 'Reauthentication successful' })
-  //   } catch (error) {
-  //     console.error('Error reauthenticating user:', error)
-  //     return NextResponse.json({ error: 'Server error' }, { status: 500 })
-  //   }
+  try {
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+    if (!token || !token.id) {
+      return NextResponse.json({ error: 'User not allowed' }, { status: 401 })
+    }
+    const { email } = token
+
+    const body = await req.json()
+    const { password } = body
+    if (!password || !email) {
+      return NextResponse.json(
+        {
+          error: 'Email and password are required',
+        },
+        { status: 400 },
+      )
+    }
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    )
+
+    console.log(userCredential)
+    return NextResponse.json({ message: 'Reauthentication successful' })
+  } catch (error) {
+    console.error('Error reauthenticating user:', error)
+    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+  }
 }

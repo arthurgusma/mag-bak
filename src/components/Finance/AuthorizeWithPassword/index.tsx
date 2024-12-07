@@ -1,13 +1,11 @@
 'use client'
 
-import { ButtonSubmit } from '@/components/UI/Buttons'
-// import BasicModal from '@/components/UI/Modal'
+import { Button } from '@/components/UI/Buttons'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Input from '@/components/UI/Input'
 
 import { useForm } from 'react-hook-form'
 import z from 'zod'
-import { auth } from '@/firebaseConfig'
 
 const schema = z.object({
   password: z.string().min(8, 'Senha deve ter pelo menos 8 caracteres'),
@@ -15,7 +13,13 @@ const schema = z.object({
 
 type Schema = z.infer<typeof schema>
 
-export default function AuthorizeWithPassword() {
+interface AuthorizeWithPasswordProps {
+  onSuccess: () => void
+}
+
+export default function AuthorizeWithPassword({
+  onSuccess,
+}: AuthorizeWithPasswordProps) {
   const {
     register,
     handleSubmit,
@@ -24,7 +28,8 @@ export default function AuthorizeWithPassword() {
     resolver: zodResolver(schema),
     reValidateMode: 'onChange',
   })
-  async function onSubmit(data: Schema) {
+
+  const onSubmit = async (data: Schema) => {
     await fetch('/api/auth/authorize', {
       method: 'POST',
       headers: {
@@ -34,16 +39,14 @@ export default function AuthorizeWithPassword() {
     }).then((res) => {
       if (res.status === 200) {
         alert('Transação realizada com sucesso')
+        onSuccess()
       } else {
         alert('Erro ao realizar transação')
       }
     })
   }
 
-  console.log(auth.currentUser, 'auth')
-
   return (
-    // <BasicModal title="Informe sua senha" buttonText="Realizar transação">
     <form onSubmit={handleSubmit(onSubmit)}>
       <Input
         label="Senha"
@@ -51,7 +54,8 @@ export default function AuthorizeWithPassword() {
         {...register('password', { required: 'Senha é obrigatória' })}
         error={errors.password?.message}
       />
-      <ButtonSubmit>Confirmar</ButtonSubmit>
+      <div className="mb-4" />
+      <Button type="submit">Confirmar</Button>
     </form>
   )
 }

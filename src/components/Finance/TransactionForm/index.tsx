@@ -53,19 +53,21 @@ export function TransactionForm({ handleClose }: TransactionFormProps) {
         amount: convertCurrencyToNumber(data.amount),
         updatedAmount: user.balance - convertCurrencyToNumber(data.amount),
       }),
-    }).then(async (res) => {
-      if (res.status === 201) {
-        const data = await res.json()
-        addTransaction(data.transaction)
-        setUser((prev) => ({
-          ...prev,
-          balance: data.transaction.updatedAmount,
-        }))
-        handleClose()
-      } else {
-        alert('Erro ao realizar transação')
-      }
     })
+      .then(async (res) => {
+        if (res.status === 201) {
+          const data = await res.json()
+          addTransaction(data.transaction)
+          setUser((prev) => ({
+            ...prev,
+            balance: data.transaction.updatedAmount,
+          }))
+          handleClose()
+        }
+      })
+      .catch((error) => {
+        console.error('Error creating transaction:', error)
+      })
   }
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,9 +81,8 @@ export function TransactionForm({ handleClose }: TransactionFormProps) {
   }
 
   const handleOpenModal = () => {
-    handleSubmit(() => {
-      setOpenModal(true)
-    })()
+    handleSubmit(() => {})()
+    setOpenModal(true)
   }
 
   function handlePasswordSuccess() {
@@ -177,7 +178,7 @@ export function TransactionForm({ handleClose }: TransactionFormProps) {
               onChange={handleAmountChange}
             />
           </div>
-          <Button type="button" handleClick={() => handleOpenModal()}>
+          <Button type="button" handleClick={handleOpenModal}>
             Realizar Transferência
           </Button>
         </form>

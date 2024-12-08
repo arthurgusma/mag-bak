@@ -16,10 +16,12 @@ type Schema = z.infer<typeof schema>
 
 interface AuthorizeWithPasswordProps {
   onSuccess: () => void
+  setLoad: (value: boolean) => void
 }
 
 export default function AuthorizeWithPassword({
   onSuccess,
+  setLoad,
 }: AuthorizeWithPasswordProps) {
   const [error, setError] = useState<string | null>(null)
   const {
@@ -32,6 +34,7 @@ export default function AuthorizeWithPassword({
   })
 
   const onSubmit = async (data: Schema) => {
+    setLoad(true)
     await fetch('/api/auth/authorize', {
       method: 'POST',
       headers: {
@@ -50,6 +53,7 @@ export default function AuthorizeWithPassword({
       })
       .catch((error) => {
         setError(error.message)
+        setLoad(false)
       })
   }
 

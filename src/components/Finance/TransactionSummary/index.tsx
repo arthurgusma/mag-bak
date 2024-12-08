@@ -18,7 +18,6 @@ export function TransactionSummary() {
           </h1>
         ) : (
           transactions?.map((transaction) => {
-            console.log(transaction)
             return (
               <TransactionCard
                 key={transaction.createdAt}

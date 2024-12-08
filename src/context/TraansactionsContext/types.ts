@@ -7,8 +7,8 @@ export interface Transaction {
   type: 'TED' | 'PIX'
   cpfCnpj: string
   bank?: string
-  agency?: number
-  account?: number
+  agency?: string
+  account?: string
   pixKey?: string
   amount: number
   createdAt: string

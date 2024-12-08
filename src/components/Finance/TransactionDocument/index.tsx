@@ -1,6 +1,7 @@
 import { Transaction } from '@/context/TraansactionsContext/types'
 import { formartCurrencyToReal, formatIsoDate } from '@/helpers'
 import React from 'react'
+import TransactionDocumentField from './TransactionDocumentField'
 
 export default function TransactionDocument({
   id,
@@ -19,56 +20,22 @@ export default function TransactionDocument({
       <h1 className="text-xl font-bold text-gray-800 mb-4">
         Comprovante de Transferência
       </h1>
-
       <div className="space-y-2">
-        <div>
-            <h1 className="font-semibold">CPF/CNPJ:</h1>
-            <p>{cpfCnpj}</p>
-        </div>
-        <div>
-            <h1 className="font-semibold">Nome do favorecido:</h1>
-            <p>{name}</p>
-        </div>
-
+        <TransactionDocumentField label="CPF/CNPJ:" value={cpfCnpj} />
+        <TransactionDocumentField label="Nome do favorecido:" value={name} />
         {type === 'TED' && (
           <>
-            <div>
-                <h1 className="font-semibold">Banco:</h1>
-                <p>{bank}</p>
-            </div>
-
-            <div>
-                <h1 className="font-semibold">Agência:</h1>
-                <p>{agency}</p>
-            </div>
-
-            <div>
-                <h1 className="font-semibold">Conta:</h1>
-                <p>{account}</p>
-            </div>
+            <TransactionDocumentField label="Banco:" value={bank || ""} />
+            <TransactionDocumentField label="Agência:" value={agency || ""} />
+            <TransactionDocumentField label="Conta:" value={account || ""} />
           </>
         )}
-
         {type === 'PIX' && (
-          <div>
-            <h1 className="font-semibold">Chave PIX:</h1>
-            <p>{pixKey}</p>
-          </div>
+            <TransactionDocumentField label="Chave PIX:" value={pixKey || ""} />
         )}
-
-        <div>
-            <h1 className="font-semibold">Valor transferido:</h1>
-            <p>{formartCurrencyToReal(amount)}</p>
-        </div>
-
-        <div>
-            <h1 className="font-semibold">Data da Transferência:</h1>
-            <p>{formatIsoDate(createdAt)}</p>
-        </div>
-        <div>
-            <h1 className="font-semibold">ID da transação:</h1>
-            <p>{id}</p>
-        </div>
+        <TransactionDocumentField label="Valor transferido:" value={formartCurrencyToReal(amount)} />
+        <TransactionDocumentField label="Data da Transferência:" value={formatIsoDate(createdAt)} />
+        <TransactionDocumentField label="ID da transação:" value={id} />
       </div>
     </div>
   )

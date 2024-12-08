@@ -26,7 +26,9 @@ export default function Welcome() {
             <div>
               <h1 className="text-xl">
                 Bem-vindo ao Mag Bak,{' '}
-                <span className="capitalize">{user.displayName}</span>
+                <span className="capitalize block md:inline">
+                  {user.displayName}!
+                </span>
               </h1>
               <ButtonText type="button" handleClick={signOut}>
                 Sair da conta

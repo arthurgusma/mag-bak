@@ -19,10 +19,7 @@ export function TransactionSummary() {
         ) : (
           transactions?.map((transaction) => {
             return (
-              <TransactionCard
-                key={transaction.createdAt}
-                {...transaction}
-              />
+              <TransactionCard key={transaction.createdAt} {...transaction} />
             )
           })
         )}

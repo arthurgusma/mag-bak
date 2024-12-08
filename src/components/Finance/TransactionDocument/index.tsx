@@ -25,16 +25,22 @@ export default function TransactionDocument({
         <TransactionDocumentField label="Nome do favorecido:" value={name} />
         {type === 'TED' && (
           <>
-            <TransactionDocumentField label="Banco:" value={bank || ""} />
-            <TransactionDocumentField label="Agência:" value={agency || ""} />
-            <TransactionDocumentField label="Conta:" value={account || ""} />
+            <TransactionDocumentField label="Banco:" value={bank || ''} />
+            <TransactionDocumentField label="Agência:" value={agency || ''} />
+            <TransactionDocumentField label="Conta:" value={account || ''} />
           </>
         )}
         {type === 'PIX' && (
-            <TransactionDocumentField label="Chave PIX:" value={pixKey || ""} />
+          <TransactionDocumentField label="Chave PIX:" value={pixKey || ''} />
         )}
-        <TransactionDocumentField label="Valor transferido:" value={formartCurrencyToReal(amount)} />
-        <TransactionDocumentField label="Data da Transferência:" value={formatIsoDate(createdAt)} />
+        <TransactionDocumentField
+          label="Valor transferido:"
+          value={formartCurrencyToReal(amount)}
+        />
+        <TransactionDocumentField
+          label="Data da Transferência:"
+          value={formatIsoDate(createdAt)}
+        />
         <TransactionDocumentField label="ID da transação:" value={id} />
       </div>
     </div>

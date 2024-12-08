@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { doc, setDoc } from 'firebase/firestore'
 import { db, auth } from '@/firebaseConfig'
+import { FirebaseError } from 'firebase/app'
 
 export async function POST(req: Request) {
   try {
@@ -34,12 +35,14 @@ export async function POST(req: Request) {
     )
   } catch (error: unknown) {
     console.error('Error creating user:', error)
-    return NextResponse.json(
-      {
-        error: 'Internal Server Error',
-        code: 500,
-      },
-      { status: 500 },
-    )
+    if (error instanceof FirebaseError) {
+      if (error.code === 'auth/email-already-in-use') {
+        return NextResponse.json(
+          { error: 'Email já cadastrado, entre com email e senha' },
+          { status: 403 },
+        )
+      }
+    }
+    throw new Error('Um erro inexperado aconteceu, tente mais tarde.')
   }
 }

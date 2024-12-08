@@ -1,5 +1,5 @@
 'use client'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import SwitchForm from '../SwitchForm'
 import Input from '../UI/Input'
 import z from 'zod'
@@ -33,6 +33,7 @@ interface SignInProps {
 }
 
 export default function SignUp({ setisSignUp, isSignUp }: SignInProps) {
+  const [error, setError] = useState<string | null>(null)
   const {
     register,
     handleSubmit,
@@ -49,17 +50,22 @@ export default function SignUp({ setisSignUp, isSignUp }: SignInProps) {
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((res) => {
-      if (res.status === 201) {
-        signIn('credentials', {
-          email: data.email,
-          password: data.password,
-          callbackUrl: '/home',
-        })
-      } else {
-        console.error('Error creating user')
-      }
     })
+      .then((res) => {
+        if (res.status === 403) {
+          throw new Error('Email já cadastrado, entre com email e senha.')
+        }
+        if (res.status === 201) {
+          signIn('credentials', {
+            email: data.email,
+            password: data.password,
+            callbackUrl: '/home',
+          })
+        }
+      })
+      .catch((error) => {
+        setError(error.message)
+      })
   }
 
   return (
@@ -94,7 +100,7 @@ export default function SignUp({ setisSignUp, isSignUp }: SignInProps) {
         label="Confirme a senha"
         error={errors.confirmPassword?.message}
       />
-
+      {error && <p className="text-red-500">{error}</p>}
       <div className="flex justify-center py-4">
         <Button type="submit">Criar conta</Button>
       </div>

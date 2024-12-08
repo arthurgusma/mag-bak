@@ -16,6 +16,9 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: 'Mag Bank App',
   description: 'This is a simple banking app, created as a demo.',
+  icons: {
+    icon: '/logo.png',
+  },
 }
 
 export default function RootLayout({

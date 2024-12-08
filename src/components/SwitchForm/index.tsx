@@ -18,7 +18,7 @@ export default function SwitchForm({
   return (
     <div className="flex justify-center">
       <p className="mr-1 p-0">{description}</p>
-      <ButtonText type="button" onClick={() => setisSignUp(!isSignUp)}>
+      <ButtonText type="button" handleClick={() => setisSignUp(!isSignUp)}>
         {buttonLabel}
       </ButtonText>
     </div>

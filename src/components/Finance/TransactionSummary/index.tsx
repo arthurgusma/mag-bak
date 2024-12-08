@@ -18,14 +18,11 @@ export function TransactionSummary() {
           </h1>
         ) : (
           transactions?.map((transaction) => {
-            const { name, amount, type, createdAt } = transaction
+            console.log(transaction)
             return (
               <TransactionCard
                 key={transaction.createdAt}
-                amount={amount}
-                type={type}
-                name={name}
-                date={createdAt}
+                {...transaction}
               />
             )
           })

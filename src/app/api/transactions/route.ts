@@ -22,7 +22,12 @@ export async function GET(req: NextRequest) {
 
     const querySnapshot = await getDocs(q)
 
-    const transactions = querySnapshot.docs.map((doc) => doc.data())
+    const transactions = querySnapshot.docs.map((doc) => {
+      return {
+        id: doc.id,
+        ...doc.data(),
+      }
+    })
 
     return NextResponse.json({ transactions }, { status: 200 })
   } catch (error: unknown) {

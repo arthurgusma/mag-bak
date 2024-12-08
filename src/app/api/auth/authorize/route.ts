@@ -1,4 +1,5 @@
 import { auth } from '@/firebaseConfig'
+import { FirebaseError } from 'firebase/app'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
@@ -25,7 +26,16 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: 'Reauthentication successful' })
   } catch (error) {
-    console.error('Error reauthenticating user:', error)
-    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+    if (error instanceof FirebaseError) {
+      if (error.code === 'auth/invalid-credential') {
+        return NextResponse.json(
+          {
+            error: 'Invalid credentials',
+          },
+          { status: 401 },
+        )
+      }
+    }
+    throw new Error('Um erro inexperado aconteceu, tente mais tarde.')
   }
 }

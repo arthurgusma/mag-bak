@@ -7,11 +7,10 @@ import TransactionDocument from '../../TransactionDocument'
 import { useState } from 'react'
 import { Transaction } from '@/context/TraansactionsContext/types'
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface TransactionCardProps extends Transaction {}
 
-export default function TransactionCard({
-  ...props
-}: TransactionCardProps) {
+export default function TransactionCard({ ...props }: TransactionCardProps) {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <>
@@ -26,14 +25,15 @@ export default function TransactionCard({
             {formartCurrencyToReal(props.amount / 100)}
           </p>
           <p className="text-gray-700">
-            <span className="font-medium">Dia:</span> {formatIsoDate(props.createdAt)}
+            <span className="font-medium">Dia:</span>{' '}
+            {formatIsoDate(props.createdAt)}
           </p>
           <p className="text-gray-700">
             <span className="">Nome do favorecido:</span> {props.name}
           </p>
         </div>
         <ButtonText type="button" handleClick={() => setIsOpen(true)}>
-          <p className='text-black'>+ detalhes</p>
+          <p className="text-black">+ detalhes</p>
         </ButtonText>
       </div>
       <BasicModal

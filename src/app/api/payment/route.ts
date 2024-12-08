@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     const { id } = token
 
     if (!id)
-      return NextResponse.json({ error: 'User not allowd' }, { status: 401 })
+      return NextResponse.json({ error: 'User not allowed' }, { status: 401 })
 
     const body = await req.json()
 
@@ -32,7 +32,20 @@ export async function POST(req: NextRequest) {
 
     await setDoc(transactionRef, transaction)
 
-    const createdTransaction = (await getDoc(transactionRef)).data()
+    const createdTransactionSnapshot = await getDoc(transactionRef)
+    const createdTransaction = createdTransactionSnapshot.exists()
+      ? {
+          id: transactionRef.id,
+          ...createdTransactionSnapshot.data(),
+        }
+      : null
+
+    if (!createdTransaction) {
+      return NextResponse.json(
+        { error: 'Error retrieving created transaction' },
+        { status: 500 },
+      )
+    }
 
     const userRef = doc(db, `users/${id}`)
     await updateDoc(userRef, {

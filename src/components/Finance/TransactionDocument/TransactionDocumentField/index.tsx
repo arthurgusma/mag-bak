@@ -9,7 +9,7 @@ export default function TransactionDocumentField({
 }: TransactionDocumentFieldProps) {
   return (
     <div>
-      <h1 className="font-semibold">{label}:</h1>
+      <h1 className="font-semibold">{label}</h1>
       <p>{value}</p>
     </div>
   )

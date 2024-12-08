@@ -7,6 +7,7 @@ import Input from '@/components/UI/Input'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 const schema = z.object({
   password: z.string().min(8, 'Senha deve ter pelo menos 8 caracteres'),
@@ -24,6 +25,9 @@ export default function AuthorizeWithPassword({
   setLoad,
 }: AuthorizeWithPasswordProps) {
   const [error, setError] = useState<string | null>(null)
+
+  const router = useRouter()
+
   const {
     register,
     handleSubmit,
@@ -45,6 +49,13 @@ export default function AuthorizeWithPassword({
       .then((res) => {
         if (res.status === 401) {
           throw new Error('Senha incorreta')
+        }
+
+        if (res.status === 403) {
+          setError('Sessão expirada, faça login novamente')
+          setTimeout(() => {
+            router.push('/')
+          }, 3000)
         }
 
         if (res.status === 200) {

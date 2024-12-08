@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
   try {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
     if (!token || !token.id) {
-      return NextResponse.json({ error: 'User not allowed' }, { status: 401 })
+      return NextResponse.json({ error: 'User not allowed' }, { status: 403 })
     }
     const { email } = token
 

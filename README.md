@@ -4,6 +4,12 @@ Mag-Bak is a financial management application that allows users to perform basic
 
 ---
 
+## Access the production project here
+
+[http://mag-bak.vercel.app](http://mag-bak.vercel.app)
+
+---
+
 ## Table of Contents
 1. [Features](#features)  
 2. [Technologies](#technologies)  

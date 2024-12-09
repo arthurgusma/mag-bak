@@ -136,7 +136,7 @@ export function TransactionForm({ handleClose }: TransactionFormProps) {
             error={errors.name?.message}
           />
           <Input
-            label="CPF/CNPJ"
+            label="CPF/CNPJ (com pontuação)"
             {...register('cpfCnpj')}
             error={errors.cpfCnpj?.message}
             placeholder="ex: 000.000.000-00"

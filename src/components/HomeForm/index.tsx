@@ -9,6 +9,7 @@ import Input from '@/components/UI/Input'
 import SwitchForm from '../SwitchForm'
 import { signIn } from 'next-auth/react'
 import { Button } from '../UI/Buttons'
+import LoadingSpinner from '../UI/LoadingSpinner'
 
 const schema = z.object({
   email: z.string().email({ message: 'informe um email valido' }),
@@ -19,6 +20,7 @@ type LogInFormData = z.infer<typeof schema>
 
 export default function HomeForm() {
   const [isSignUp, setIsSignUp] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const {
     register,
@@ -30,6 +32,7 @@ export default function HomeForm() {
   })
 
   async function onSubmit(data: LogInFormData) {
+    setLoading(true)
     try {
       signIn('credentials', {
         email: data.email,
@@ -38,6 +41,7 @@ export default function HomeForm() {
       })
     } catch (error: unknown) {
       console.error('Error signing in:', error)
+      setLoading(false)
     }
   }
 
@@ -58,9 +62,10 @@ export default function HomeForm() {
               label="Senha"
               error={errors.password?.message}
             />
-
             <div className="flex justify-center py-4">
-              <Button type="submit">Entrar</Button>
+              <Button type="submit">
+                {loading ? <LoadingSpinner /> : 'Entrar'}
+              </Button>
             </div>
           </form>
           <SwitchForm

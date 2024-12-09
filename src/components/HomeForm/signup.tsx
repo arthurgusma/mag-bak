@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '../UI/Buttons'
 import { signIn } from 'next-auth/react'
+import LoadingSpinner from '../UI/LoadingSpinner'
 
 const schema = z
   .object({
@@ -34,6 +35,7 @@ interface SignInProps {
 
 export default function SignUp({ setisSignUp, isSignUp }: SignInProps) {
   const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
   const {
     register,
     handleSubmit,
@@ -44,6 +46,7 @@ export default function SignUp({ setisSignUp, isSignUp }: SignInProps) {
   })
 
   async function onSubmit(data: SigUpFormData) {
+    setLoading(true)
     await fetch('/api/auth/signup', {
       method: 'POST',
       body: JSON.stringify(data),
@@ -62,9 +65,11 @@ export default function SignUp({ setisSignUp, isSignUp }: SignInProps) {
             callbackUrl: '/home',
           })
         }
+        setLoading(false)
       })
       .catch((error) => {
         setError(error.message)
+        setLoading(false)
       })
   }
 
@@ -102,7 +107,9 @@ export default function SignUp({ setisSignUp, isSignUp }: SignInProps) {
       />
       {error && <p className="text-red-500">{error}</p>}
       <div className="flex justify-center py-4">
-        <Button type="submit">Criar conta</Button>
+        <Button type="submit">
+          {loading ? <LoadingSpinner /> : 'Criar conta'}
+        </Button>
       </div>
       <SwitchForm
         setisSignUp={setisSignUp}

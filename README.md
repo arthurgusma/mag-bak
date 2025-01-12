@@ -2,7 +2,7 @@
 
 Mag-Bak is a financial management application that allows users to perform basic financial operations such as viewing their balance, performing transactions (TED/PIX), and reviewing transaction history. The project is built using **Next.js**, **Tailwind CSS**, and **Firebase**, with user authentication via **JWT** and **next-auth** .
 
----
+![](/public/magbankmockup.png)
 
 ## Access the production project here
 
